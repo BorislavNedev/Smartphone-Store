@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using SmartphoneStore.Web.Models;
+using SmartphoneStore.Data;
+using SmartphoneStore.Models;
 
 namespace SmartphoneStore.Web
 {
