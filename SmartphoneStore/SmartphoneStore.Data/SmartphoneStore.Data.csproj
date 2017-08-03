@@ -58,7 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EntityFrameworkRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="SmartphoneStoreDbContext.cs" />
+    <Compile Include="UnitOfWork\ISmartphoneStoreData.cs" />
+    <Compile Include="UnitOfWork\SmartphoneStoreData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
