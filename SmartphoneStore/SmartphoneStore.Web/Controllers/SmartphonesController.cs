@@ -9,6 +9,32 @@ namespace SmartphoneStore.Web.Controllers
 {
     public class SmartphonesController : BaseController
     {
+        const int PageSize = 5;
+
+        private IQueryable<SmartphoneViewModel> GetAllSmartphones()
+        {
+            var data=this.Data.Smartphones.All().Select(x => new SmartphoneViewModel
+            {
+                Id = x.Id,
+                ImageUrl = x.ImageUrl,
+                Manufacturer = x.Manufacturer.Name,
+                Model = x.Model,
+                Price = x.Price
+            }).OrderBy(x=>x.Id);
+
+            return data;
+        }
+
+        public ActionResult List(int? id)
+        {
+            int pageNumber = id.GetValueOrDefault(1);
+
+            var viewModel = GetAllSmartphones().Skip((pageNumber - 1) * PageSize).Take(PageSize);
+            ViewBag.Pages = Math.Ceiling((double)GetAllSmartphones().Count() / PageSize);
+
+            return View(viewModel);
+        }
+
         public ActionResult Details(int id)
         {
             var viewModel = this.Data.Smartphones
