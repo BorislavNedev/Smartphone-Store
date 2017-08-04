@@ -1,0 +1,29 @@
+﻿@model SmartphoneStore.Web.Models.SmartphoneDetailsViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.ManufacturerName @Model.Model</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div><strong>Monitor:</strong> @Model.MonitorSize</div>
+        <div><strong>RAM:</strong> @Model.RamMemorySize</div>
+        <div><strong>Price:</strong> @Model.Price</div>
+    </div>
+    <div class="col-md-4">
+        <img src="@Model.ImageUrl" />
+    </div>
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div><strong>Description:</strong> @Model.Description</div>
+        }        
+    </div>
+</div>
+<div>
+    @foreach (var comment in Model.Comments)
+    {
+       @Html.Partial("_CommentPartial",comment)
+    }
+</div>

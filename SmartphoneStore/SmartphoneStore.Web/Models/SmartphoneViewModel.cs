@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SmartphoneStore.Web.Models
+﻿namespace SmartphoneStore.Web.Models
 {
     public class SmartphoneViewModel
     {
