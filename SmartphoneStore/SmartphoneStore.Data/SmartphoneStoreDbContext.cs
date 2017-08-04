@@ -3,6 +3,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
     using System.Data.Entity;
+
     public class SmartphoneStoreDbContext : IdentityDbContext<User>
     {
         public SmartphoneStoreDbContext()

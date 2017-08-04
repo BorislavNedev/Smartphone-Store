@@ -1,7 +1,10 @@
-﻿using SmartphoneStore.Web.Models;
+﻿using Microsoft.AspNet.Identity;
+using SmartphoneStore.Models;
+using SmartphoneStore.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -33,6 +36,31 @@ namespace SmartphoneStore.Web.Controllers
             ViewBag.Pages = Math.Ceiling((double)GetAllSmartphones().Count() / PageSize);
 
             return View(viewModel);
+        }
+
+        public ActionResult PostComment(SubmitCommentModel commentModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var username = this.User.Identity.GetUserName();
+                var userId = this.User.Identity.GetUserId();
+
+                this.Data.Comments.Add(new Comment()
+                {
+                    AuthorId = userId,
+                    Content = commentModel.Comment,
+                    SmartphoneId = commentModel.SmartphoneId
+                });
+
+                this.Data.SaveChanges();
+
+                var viewModel = new CommentViewModel { AuthorUsername = username, Content = commentModel.Comment };
+                return PartialView("_CommentPartial", viewModel);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, ModelState.Values.First().ToString());
+            }
         }
 
         public ActionResult Details(int id)

@@ -21,9 +21,24 @@
         }        
     </div>
 </div>
-<div>
+<div id="Comments">
     @foreach (var comment in Model.Comments)
     {
        @Html.Partial("_CommentPartial",comment)
     }
 </div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    using (Ajax.BeginForm("PostComment", new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.InsertAfter, UpdateTargetId = "Comments" }))
+    {
+        @Html.Hidden("SmartphoneId", Model.Id)
+        @Html.TextArea("comment")
+        <br />
+        <input type="submit" value="Submit comment" />
+    }
+}
+
+@section scripts{        
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+}
