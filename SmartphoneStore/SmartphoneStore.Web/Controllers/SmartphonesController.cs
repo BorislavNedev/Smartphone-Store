@@ -28,6 +28,7 @@ namespace SmartphoneStore.Web.Controllers
             return data;
         }
 
+        [Authorize]
         public ActionResult List(int? id)
         {
             int pageNumber = id.GetValueOrDefault(1);
@@ -38,6 +39,8 @@ namespace SmartphoneStore.Web.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult PostComment(SubmitCommentModel commentModel)
         {
             if (ModelState.IsValid)
@@ -65,6 +68,8 @@ namespace SmartphoneStore.Web.Controllers
 
         public ActionResult Details(int id)
         {
+            var userId = User.Identity.GetUserId();
+
             var viewModel = this.Data.Smartphones
                 .All()
                 .Where(x => x.Id == id)
@@ -78,10 +83,34 @@ namespace SmartphoneStore.Web.Controllers
                     Price = x.Price,
                     Description = x.Description,
                     ManufacturerName = x.Manufacturer.Name,
-                    Comments = x.Comments.Select(y => new CommentViewModel { AuthorUsername = y.Author.UserName, Content = y.Content })
+                    Comments = x.Comments.Select(y => new CommentViewModel { AuthorUsername = y.Author.UserName, Content = y.Content }),
+                    UserCanVote = !(x.Votes.Any(y => y.AuthorId == userId)),
+                    Votes = x.Votes.Count()
                 }).FirstOrDefault();
-
+            
             return View(viewModel);
+        }
+        
+        public ActionResult Vote(int id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var canVote = !this.Data.Votes.All().Any(x => x.SmartphoneId == id && x.AuthorId == userId);
+
+            if (canVote)
+            {
+                this.Data.Smartphones.Find(id).Votes.Add(new Vote
+                {
+                    SmartphoneId = id,
+                    AuthorId = userId
+                });
+
+                this.Data.SaveChanges();
+            }
+
+            var votes = this.Data.Smartphones.Find(id).Votes.Count();
+
+            return Content(votes.ToString());
         }
     }
 }

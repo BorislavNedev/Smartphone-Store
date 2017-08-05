@@ -21,6 +21,15 @@
         }        
     </div>
 </div>
+<br />
+<div>
+    Votes: <span id="smartphone-votes">@Model.Votes</span> 
+    @if (User.Identity.IsAuthenticated && Model.UserCanVote)
+    {
+        @Ajax.ActionLink("Vote","Vote",new { id = Model.Id }, new AjaxOptions { InsertionMode=InsertionMode.Replace,UpdateTargetId= "smartphone-votes", HttpMethod="Post",OnSuccess="hideVoteButton" },new {id="vote-button", @class = "btn" })
+    }
+</div>
+<br />
 <div id="Comments">
     @foreach (var comment in Model.Comments)
     {
@@ -34,6 +43,7 @@
     {
         @Html.Hidden("SmartphoneId", Model.Id)
         @Html.TextArea("comment")
+        @Html.AntiForgeryToken()
         <br />
         <input type="submit" value="Submit comment" />
     }
@@ -41,4 +51,9 @@
 
 @section scripts{        
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function hideVoteButton(){
+            $("#vote-button").hide();
+        }
+    </script>
 }

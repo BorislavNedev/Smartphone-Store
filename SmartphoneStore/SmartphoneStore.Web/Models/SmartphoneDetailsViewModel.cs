@@ -21,5 +21,9 @@
         public string ManufacturerName { get; set; }
 
         public IEnumerable<CommentViewModel> Comments { get; set; }
+
+        public bool UserCanVote { get; set; }
+
+        public int Votes { get; set; }
     }
 }
