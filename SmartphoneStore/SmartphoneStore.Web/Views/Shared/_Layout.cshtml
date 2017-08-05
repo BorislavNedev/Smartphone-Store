@@ -26,6 +26,18 @@
                     {
                         <li>@Html.ActionLink("All Smartphones", "List", "Smartphones")</li>
                     }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <button class="btn btn-default" type="button" data-toggle="dropdown">
+                                Administration
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Manufacturers", "Index", "ManufacturersAdministration")</li>
+                                <li>@Html.ActionLink("Smartphones", "Index", "SmartphonesAdministration")</li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
